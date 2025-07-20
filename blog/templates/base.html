@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Blog{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'users:login' %}">Login</a>
+            <a href="{% url 'users:register' %}">Register</a>
+            <a href="{% url 'blog:post-list' %}">Blogs</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {{ now|date:"Y" }} My Blog</p>
+    </footer>
+</body>
+</html>
