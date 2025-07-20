@@ -1,5 +1,5 @@
 {% csrf_token %}
-<form method="post" action="{% url 'login' %}"></form>
+<form method="post" action="{% url 'users:login' %}"></form>
 <div class="form-group">
     <label for="username">Username:</label>
     <input type="text" name="username" id="username" class="form-control" required>
