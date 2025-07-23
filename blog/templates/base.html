@@ -9,8 +9,19 @@
 <body>
     <header>
         <nav>
-            <a href="{% url 'users:login' %}">Login</a>
-            <a href="{% url 'users:register' %}">Register</a>
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}!</span>
+                <form method="post" action="{% url 'users:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <span>Welcome, Guest!</span>
+                <a href="{% url 'users:login' %}">Login</a>
+                <a href="{% url 'users:register' %}">Register</a>
+            {% endif %}
+            
+            
             <a href="{% url 'blog:post-list' %}">Blogs</a>
         </nav>
     </header>
