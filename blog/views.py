@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from .models import Post
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home_page(request):
@@ -25,6 +26,7 @@ class PostDetailView(generic.DetailView):
         post.save(update_fields=['view_count'])
         return post
     
+
 class CreatePost(generic.CreateView):
     model = Post
     fields = ['title', 'body', 'category', 'tags', 'scheduled_publish', 'attachments']

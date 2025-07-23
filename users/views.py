@@ -39,6 +39,10 @@ class LoginView(generic.View):
         return render(request, 'users/login.html', {'form': form})
     
 class LogoutView(generic.View):
+    def get(self, request):
+        logout(request)
+        return render(request, 'users/logout.html')
+    
     def post(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('blog:post-list'))
