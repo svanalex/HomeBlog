@@ -7,7 +7,34 @@
     <p><strong>Published:</strong> {{ post.created_at|date:"F j, Y" }}</p>
     <p><strong>Views:</strong> {{ post.view_count }}</p>
     <p><strong>Blog:</strong> {{ post.body | linebreaks }}</p>
+    <p><strong>Category:</strong> {{ post.category.name }}</p>
+    {% if post.attachments %}
+    <p><strong>Attachments:</strong><img src="{{ post.attachments.url }}"></p>{{ post.attachments }}</p>
+    {% else %}
+    <p>No attachments for this post.</p>
+    {% endif %}
+
     <hr>
+
+    <h2>Comments</h2>
+    {% for comment in comments %}
+        <div>
+            <strong>{{ comment.author }}</strong> at {{ comment.created_at }}<br>
+            <p>{{ comment.content }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Comment</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to comment.</p>
+    {% endif %}
 
 
   </article>

@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 
+from users.models import user
+
 
 # Create your views here.
 
@@ -46,3 +48,16 @@ class LogoutView(generic.View):
     def post(self, request):
         logout(request)
         return HttpResponseRedirect(reverse('blog:post-list'))
+    
+class UserProfileView(generic.DetailView):
+    model = user
+    template_name = 'users/profile.html'
+    context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(user, username=self.kwargs['username'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = self.object.post_set.all()
+        return context
