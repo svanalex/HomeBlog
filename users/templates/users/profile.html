@@ -1,0 +1,11 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'profilecss.css' %}">
+<p><a href="{% url 'users:profile' username=user.username %}">Profile</a></p>
+<div class="profile-container">
+    <h1 class="center">Profile</h1>
+    <div class="profile-info">
+        <p><strong>Username:</strong> {{ user.username }}</p> 
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    </div>

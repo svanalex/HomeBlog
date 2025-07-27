@@ -4,6 +4,12 @@
   <h1>Recent Posts</h1>
   <hr>
 
+  {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+    <p><a href="{% url 'users:profile' user.username %}">View Profile</a></p>
+  {% endif %}
+  
+
   <p>Want to create a new post?</p>
   <p><a href="{% url 'blog:post-create' %}" class="btn btn-primary">Create New Post</a></p>
 
