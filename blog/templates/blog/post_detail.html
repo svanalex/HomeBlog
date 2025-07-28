@@ -16,6 +16,9 @@
 
     <hr>
 
+    <p>user profile</p>
+    <p><a href="{% url 'users:profile' username=post.author.username %}">View Author's Profile</a></p>
+
     <h2>Comments</h2>
     {% for comment in comments %}
         <div>

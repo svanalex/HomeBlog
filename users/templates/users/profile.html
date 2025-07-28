@@ -1,6 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
 {% load static %}
 <link rel="stylesheet" href="{% static 'profilecss.css' %}">
-<p><a href="{% url 'users:profile' username=user.username %}">Profile</a></p>
+
+<a href="{% url 'users:profile' username=user.username %}"></a>
 <div class="profile-container">
     <h1 class="center">Profile</h1>
     <div class="profile-info">
@@ -9,3 +13,18 @@
         <p><strong>First Name:</strong> {{ user.first_name }}</p>
         <p><strong>Last Name:</strong> {{ user.last_name }}</p>
     </div>
+
+<h2>{{ user.username }}'s Posts</h2>
+<ul>
+    {% for post in posts %}
+        <li>
+           
+            <a href="{% url 'blog:post-detail' post.pk %}">{{ post.title }}</a>
+            <p><strong>Published:</strong> {{ post.created_at|date:"F j, Y" }}</p>
+            <p>{{ post.content|truncatewords:20 }}</p>
+        </li>
+    {% empty %}
+        <li>No posts yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
