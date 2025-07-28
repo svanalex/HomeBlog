@@ -8,8 +8,10 @@ from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 
 from users.models import user
+from blog.models import Post, Comment
 
 
 # Create your views here.
@@ -49,15 +51,31 @@ class LogoutView(generic.View):
         logout(request)
         return HttpResponseRedirect(reverse('blog:post-list'))
     
-class UserProfileView(generic.DetailView):
-    model = user
-    template_name = 'users/profile.html'
-    context_object_name = 'user'
+# class UserProfileView(generic.DetailView):
+#     model = User
+#     template_name = 'users/profile.html'
+#     context_object_name = 'user'
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(user, username=self.kwargs['username'])
+#     def get_object(self, queryset=None):
+#         return get_object_or_404(user, username=self.kwargs['username'])
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['posts'] = self.object.post_set.all()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['posts'] = self.object.post_set.all()
+#         return context
+class UserProfileView(generic.DetailView):
+    model = User
+    template_name = 'users/profile.html'
+    
+
+    def get(self, request, *args, **kwargs):
+        username = self.kwargs.get('username')
+        user = get_object_or_404(User, username=username)
+        posts = Post.objects.filter(author=user)
+        return render(request, self.template_name, {'user': user, 'posts': posts})
+
+@login_required
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(author=user)
+    return render(request, 'users/profile.html', {'user': user, 'posts': posts})
