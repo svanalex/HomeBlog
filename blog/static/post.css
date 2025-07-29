@@ -7,9 +7,9 @@ body{
     text-align: center;
 }
 button{
-    background-color: ;
+    background-color: darkblue;
     color: green;
-    border: ;
+    border: none;
     padding: 10px 20px;
     cursor: pointer;
 }

@@ -1,24 +1,22 @@
 {% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'post.css' %}">
 
 {% block content %}
-  <article>
+
+  <main>
+    <h1> {{ post.category }}</h1>
+  <div class="article-wrapper">
     <h1>{{ post.title }}</h1>
-    <p><strong>Author:</strong> {{ post.author.username }}</p>
-    <p><strong>Published:</strong> {{ post.created_at|date:"F j, Y" }}</p>
-    <p><strong>Views:</strong> {{ post.view_count }}</p>
-    <p><strong>Blog:</strong> {{ post.body | linebreaks }}</p>
-    <p><strong>Category:</strong> {{ post.category.name }}</p>
+    <p class="meta">By {{ post.author }} on {{ post.published_date }}</p>
+    <div class="content">
+      {{ post.body|safe }}
+    </div>
     {% if post.attachments %}
-    <p><strong>Attachments:</strong><img src="{{ post.attachments.url }}"></p>{{ post.attachments }}</p>
+        <img src="{{ post.attachments.url }}" alt="Attachment" class="attachment-image">
     {% else %}
-    <p>No attachments for this post.</p>
+        <p>No attachments for this post.</p>
     {% endif %}
-
-    <hr>
-
-    <p>user profile</p>
-    <p><a href="{% url 'users:profile' username=post.author.username %}">View Author's Profile</a></p>
-
     <h2>Comments</h2>
     {% for comment in comments %}
         <div>
@@ -36,11 +34,11 @@
             <button type="submit">Add Comment</button>
         </form>
     {% else %}
-        <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to comment.</p>
+        <p><a href="{% url 'users:login' %}?next={{ request.path }}">Log in</a> to comment.</p>
     {% endif %}
+  </div>
+</main>
 
-
-  </article>
 
   <p><a href="{% url 'blog:post-list' %}">&larr; Back to all posts</a></p>
 {% endblock %}
