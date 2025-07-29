@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}My Blog{% endblock %}</title>
@@ -9,20 +10,47 @@
 <body>
     <header>
         <nav>
-            {% if user.is_authenticated %}
-                <span>Welcome, {{ user.username }}!</span>
-                <form method="post" action="{% url 'users:logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            {% else %}
-                <span>Welcome, Guest!</span>
-                <a href="{% url 'users:login' %}">Login</a>
-                <a href="{% url 'users:register' %}">Register</a>
-            {% endif %}
-            
-            
-            <a href="{% url 'blog:post-list' %}">Blogs</a>
+            <table>
+                <tr>
+                    <td>
+                        <a href="{% url 'blog:post-list' %}" class="top-link">Blogs</a>
+                    </td>
+                    <td>
+                        <form action="/search" method="get">
+                            <label for="site-search"></label>
+                            <input type="search" id="site-search" name="q" placeholder="Search...">
+                            <button type="submit">Search</button>
+                        </form>
+                    </td>
+                    <td>
+                        {% if user.is_authenticated %}
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{% url 'users:profile' user.username %}" class="button-link">{{ user.username }}</a>
+                                </td>
+                                <td>
+                                    <form method="post" action="{% url 'users:logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="right-button">Logout</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                        {% else %}
+                        <table>
+                            <tr>
+                                <td><span>Welcome, Guest!</span></td>
+                                <td>
+                                    <a href="{% url 'users:login' %}">Login</a>
+                                    <a href="{% url 'users:register' %}">Register</a>
+                                </td>
+                            </tr>
+                        </table>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
         </nav>
     </header>
 
